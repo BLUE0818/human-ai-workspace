@@ -1,0 +1,1 @@
+#!/usr/bin/env nodeimport { runCli } from "../src/cli.mjs";process.exitCode = await runCli();
