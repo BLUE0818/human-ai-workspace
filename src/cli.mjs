@@ -7,6 +7,13 @@ const HELP = `用法：haiw "项目名称"
 从固定版本模板创建 YYYY-MM-DD-项目名称 工作区。
 必须预先设置环境变量 ${ROOT_ENV}。`;
 
+function jsonLine(value) {
+  return JSON.stringify(value).replace(
+    /[\u007f-\uffff]/g,
+    (character) => `\\u${character.charCodeAt(0).toString(16).padStart(4, "0")}`,
+  );
+}
+
 export async function runCli(
   argv = process.argv.slice(2),
   options = {},
@@ -23,7 +30,7 @@ export async function runCli(
     return 0;
   }
   if (argv.length !== 1) {
-    stderr.write(`${JSON.stringify({
+    stderr.write(`${jsonLine({
       ok: false,
       error: "INVALID_ARGUMENT_COUNT",
       message: "只需提供一个项目名称。用法：haiw \"项目名称\"",
@@ -37,11 +44,11 @@ export async function runCli(
       now: options.now,
       downloader: options.downloader,
     });
-    stdout.write(`${JSON.stringify(result)}\n`);
+    stdout.write(`${jsonLine(result)}\n`);
     return 0;
   } catch (error) {
     const known = error instanceof WorkspaceError;
-    stderr.write(`${JSON.stringify({
+    stderr.write(`${jsonLine({
       ok: false,
       error: known ? error.code : "UNEXPECTED_ERROR",
       message: known ? error.message : "发生未预期错误。未确认创建结果。",
@@ -49,4 +56,3 @@ export async function runCli(
     return 1;
   }
 }
-

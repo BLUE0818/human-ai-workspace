@@ -4,7 +4,7 @@
   "description": "Create a beginner-friendly Human-AI Workspace with one short command.",
   "type": "module",
   "bin": {
-    "haiw": "./bin/haiw.mjs"
+    "haiw": "bin/haiw.mjs"
   },
   "exports": {
     ".": "./src/core.mjs"
@@ -33,6 +33,10 @@
     "url": "https://github.com/BLUE0818/human-ai-workspace/issues"
   },
   "homepage": "https://github.com/BLUE0818/human-ai-workspace#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "engines": {
     "node": ">=20"
   },

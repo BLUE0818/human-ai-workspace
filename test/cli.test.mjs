@@ -159,7 +159,10 @@ test("CLI 成功和失败都输出单行 JSON", async () => withRoot(async (root
     stderr: stderr.stream,
   });
   assert.equal(successCode, 0);
-  assert.equal(JSON.parse(stdout.read()).ok, true);
+  assert.match(stdout.read(), /^[\x00-\x7f]+$/u);
+  const success = JSON.parse(stdout.read());
+  assert.equal(success.ok, true);
+  assert.match(success.workspace, /2026-08-23-命令测试$/u);
   assert.equal(stderr.read(), "");
 
   const failed = capture();
@@ -170,5 +173,6 @@ test("CLI 成功和失败都输出单行 JSON", async () => withRoot(async (root
     stderr: failed.stream,
   });
   assert.equal(failureCode, 1);
+  assert.match(failed.read(), /^[\x00-\x7f]+$/u);
   assert.equal(JSON.parse(failed.read()).error, "WORKSPACE_ROOT_NOT_SET");
 }));

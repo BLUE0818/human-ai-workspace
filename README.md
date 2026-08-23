@@ -86,10 +86,10 @@
 
 ## 立即试用模板
 
-需要 Node.js 20 或更高版本。先从 GitHub 安装 CLI：
+需要 Node.js 20 或更高版本。先安装 CLI：
 
 ```powershell
-npm install --global "github:BLUE0818/human-ai-workspace#cli-v0.1.0"
+npm install --global human-ai-workspace-cli
 ```
 
 设置工作总目录环境变量。CLI 不会猜测或自动创建总目录；未设置、目录不存在或不是绝对路径时会拒绝下载：
@@ -129,7 +129,7 @@ D:\ZM\qwenpaw_job\YYYY-MM-DD-项目名称
 
 ## 后续计划
 
-- 将 CLI 发布到 npm，进一步缩短首次安装命令；
+- 根据真实使用反馈继续改进 CLI；
 - 增加适合不同项目规模的模板变体；
 - 根据需要提供 Cloudflare Streamable HTTP MCP 入口；
 - 增加跨 Agent 的使用示例和协作评测。

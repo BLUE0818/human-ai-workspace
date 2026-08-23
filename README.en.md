@@ -86,10 +86,10 @@ The initial template keeps only five necessary collaboration entry files and use
 
 ## Try the template now
 
-Node.js 20 or later is required. Install the CLI from GitHub first:
+Node.js 20 or later is required. Install the CLI first:
 
 ```powershell
-npm install --global "github:BLUE0818/human-ai-workspace#cli-v0.1.0"
+npm install --global human-ai-workspace-cli
 ```
 
 Set the workspace root environment variable. The CLI never guesses or creates this root automatically; it refuses to download if the variable is missing, the path does not exist, or the path is not absolute:
@@ -129,7 +129,7 @@ This is the first version of the Chinese-first template. The current focus is va
 
 ## Roadmap
 
-- Publish the CLI to npm to shorten the initial installation command.
+- Improve the CLI based on real-world feedback.
 - Add template variants for projects of different sizes.
 - Provide a Cloudflare Streamable HTTP MCP entry point when needed.
 - Add cross-agent usage examples and collaboration evaluations.
