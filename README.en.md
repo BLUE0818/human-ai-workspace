@@ -39,7 +39,9 @@ This template gives every project a stable **human collaboration interface**. Pe
 project/
 ├── AGENTS.md
 ├── for_human/
-│   └── PROJECT.md
+│   ├── PROJECT.md
+│   ├── STATUS.md
+│   └── DECISIONS.md
 └── for_ai/
     ├── AGENTS.md
     ├── src/
@@ -47,7 +49,13 @@ project/
     └── ...
 ```
 
-The initial template contains only three collaboration files. It deliberately avoids generating a large set of documents that nobody maintains. Additional status, decision, or acceptance files should be introduced only when the real project needs them.
+`for_human` is divided by the reason a person needs to read the information:
+
+- `PROJECT.md`: what the project is, how it will be used, and what outcome is expected;
+- `STATUS.md`: what works now, how far the project has progressed, and what has actually been verified;
+- `DECISIONS.md`: what requires a human decision and what has already been decided.
+
+The initial template keeps only five collaboration entry files. Acceptance criteria belong in `PROJECT.md`, current acceptance results belong in `STATUS.md`, and detailed technical evidence remains in `for_ai`. Further documents should be introduced only when a real project needs them.
 
 ## How humans and AI divide responsibilities
 
@@ -84,7 +92,7 @@ You can currently use [Giget](https://github.com/unjs/giget) to copy the `templa
 npx giget@latest gh:BLUE0818/human-ai-workspace/template "D:\ZM\my-project"
 ```
 
-After downloading the template, ask your AI agent to open the target directory and read the root `AGENTS.md` first. The agent should begin by filling in `for_human/PROJECT.md` based on your goal, then carry out technical work inside `for_ai`.
+After downloading the template, ask your AI agent to open the target directory and read the root `AGENTS.md` first. The agent should initialize `for_human/PROJECT.md` from your goal, maintain current progress in `STATUS.md`, record important human decisions in `DECISIONS.md`, and carry out technical work inside `for_ai`.
 
 > This is an early usage method. A shorter, stable, dedicated CLI is planned, with a possible Cloudflare Streamable HTTP MCP entry point if cross-agent usage requires one.
 

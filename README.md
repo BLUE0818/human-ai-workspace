@@ -39,7 +39,9 @@
 项目目录/
 ├── AGENTS.md
 ├── for_human/
-│   └── PROJECT.md
+│   ├── PROJECT.md
+│   ├── STATUS.md
+│   └── DECISIONS.md
 └── for_ai/
     ├── AGENTS.md
     ├── src/
@@ -47,7 +49,13 @@
     └── ...
 ```
 
-初始模板只保留三个协作文件，避免一开始生成大量无人维护的文档。项目变复杂后，再按真实需要增加状态、决策或验收文件。
+`for_human` 按人类查看信息的目的拆成三个文件：
+
+- `PROJECT.md`：项目是什么、使用场景是什么、最终希望得到什么；
+- `STATUS.md`：现在能做什么、完成到哪里、验证到什么程度；
+- `DECISIONS.md`：哪些事项需要人决定，以及以前已经决定了什么。
+
+初始模板只保留五个协作入口文件，避免一开始生成大量无人维护的文档。验收标准放在 `PROJECT.md`，当前验收结果放在 `STATUS.md`，详细技术证据留在 `for_ai`；只有真实项目需要时才继续拆分。
 
 ## 人和 AI 如何分工
 
@@ -84,7 +92,7 @@
 npx giget@latest gh:BLUE0818/human-ai-workspace/template "D:\ZM\my-project"
 ```
 
-下载完成后，让 AI 打开目标目录并先读取根目录的 `AGENTS.md`。AI 应先根据你的目标填写 `for_human/PROJECT.md`，再进入 `for_ai` 开展技术工作。
+下载完成后，让 AI 打开目标目录并先读取根目录的 `AGENTS.md`。AI 应根据你的目标初始化 `for_human/PROJECT.md`，在 `STATUS.md` 维护当前进度，并在 `DECISIONS.md` 记录需要你参与的重要选择；技术工作在 `for_ai` 中进行。
 
 > 当前命令属于早期使用方式。后续计划提供更短、更稳定的专用 CLI，并视跨 Agent 使用需求增加 Cloudflare Streamable HTTP MCP 入口。
 
