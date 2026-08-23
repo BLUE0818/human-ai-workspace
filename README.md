@@ -1,5 +1,7 @@
 # Human-AI Workspace
 
+**简体中文** | [English](./README.en.md)
+
 > 一个面向非技术用户（小白）的 AI 与人类项目协作方案。
 
 很多人知道自己想让 AI 做什么，却看不懂项目里的代码、配置、测试和日志。这不应该妨碍人使用 AI 创建和维护真正的项目。
@@ -111,3 +113,7 @@ npx giget@latest gh:BLUE0818/human-ai-workspace/template "D:\ZM\my-project"
 - 哪些问题 AI 应该主动询问；
 - 哪些状态最值得放进 `for_human`；
 - 你使用不同 AI Agent 时遇到的兼容问题。
+
+## 开源许可
+
+本项目采用 [MIT License](./LICENSE) 开源许可。
