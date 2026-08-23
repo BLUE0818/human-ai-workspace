@@ -1,1 +1,42 @@
-{  "name": "human-ai-workspace-cli",  "version": "0.1.0",  "description": "Create a beginner-friendly Human-AI Workspace with one short command.",  "type": "module",  "bin": {    "haiw": "./bin/haiw.mjs"  },  "exports": {    ".": "./src/core.mjs"  },  "files": [    "bin",    "src"  ],  "scripts": {    "test": "node --test",    "test:integration": "node scripts/integration.mjs"  },  "keywords": [    "ai-agent",    "ai-workspace",    "human-ai-collaboration",    "project-template"  ],  "author": "BLUE0818",  "license": "MIT",  "repository": {    "type": "git",    "url": "git+https://github.com/BLUE0818/human-ai-workspace.git"  },  "bugs": {    "url": "https://github.com/BLUE0818/human-ai-workspace/issues"  },  "homepage": "https://github.com/BLUE0818/human-ai-workspace#readme",  "engines": {    "node": ">=20"  },  "dependencies": {    "giget": "3.3.1"  }}
+{
+  "name": "human-ai-workspace-cli",
+  "version": "0.1.0",
+  "description": "Create a beginner-friendly Human-AI Workspace with one short command.",
+  "type": "module",
+  "bin": {
+    "haiw": "./bin/haiw.mjs"
+  },
+  "exports": {
+    ".": "./src/core.mjs"
+  },
+  "files": [
+    "bin",
+    "src"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "test:integration": "node scripts/integration.mjs"
+  },
+  "keywords": [
+    "ai-agent",
+    "ai-workspace",
+    "human-ai-collaboration",
+    "project-template"
+  ],
+  "author": "BLUE0818",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BLUE0818/human-ai-workspace.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BLUE0818/human-ai-workspace/issues"
+  },
+  "homepage": "https://github.com/BLUE0818/human-ai-workspace#readme",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "giget": "3.3.1"
+  }
+}

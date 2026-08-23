@@ -1,1 +1,4 @@
-node_modules/coverage/*.tgz
+node_modules/
+coverage/
+*.tgz
+
