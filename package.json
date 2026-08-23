@@ -1,6 +1,6 @@
 {
   "name": "human-ai-workspace-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Create a beginner-friendly Human-AI Workspace with one short command.",
   "type": "module",
   "bin": {

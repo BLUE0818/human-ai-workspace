@@ -71,7 +71,7 @@ test("根目录必须是已存在的绝对目录", async () => {
 });
 
 test("项目名称不能是路径或包含日期前缀", async () => {
-  for (const name of ["foo/bar", "foo\\bar", "2026-08-23-测试项目"]) {
+  for (const name of ["foo/bar", "foo\\bar", "2026-08-23-测试项目", "2026-08-23_测试项目"]) {
     await assert.rejects(
       createWorkspace(name, { env: {}, now: fixedDate }),
       (error) => ["INVALID_PROJECT_NAME", "PROJECT_NAME_INCLUDES_DATE"].includes(error.code),
@@ -85,14 +85,14 @@ test("成功创建日期目录并返回结构化结果", async () => withRoot(as
     now: fixedDate,
     downloader: copyTemplate,
   });
-  assert.equal(result.workspace, path.join(root, "2026-08-23-测试项目"));
+  assert.equal(result.workspace, path.join(root, "2026-08-23_测试项目"));
   assert.equal(result.template_version, TEMPLATE_VERSION);
   assert.deepEqual(result.created_files, Object.keys(EXPECTED_FILES));
   assert.deepEqual((await readdir(result.workspace)).sort(), ["AGENTS.md", "for_ai", "for_human"]);
 }));
 
 test("目标已存在时拒绝覆盖且不调用下载器", async () => withRoot(async (root) => {
-  const target = path.join(root, "2026-08-23-测试项目");
+  const target = path.join(root, "2026-08-23_测试项目");
   await mkdir(target);
   let called = false;
   await assert.rejects(
@@ -162,7 +162,7 @@ test("CLI 成功和失败都输出单行 JSON", async () => withRoot(async (root
   assert.match(stdout.read(), /^[\x00-\x7f]+$/u);
   const success = JSON.parse(stdout.read());
   assert.equal(success.ok, true);
-  assert.match(success.workspace, /2026-08-23-命令测试$/u);
+  assert.match(success.workspace, /2026-08-23_命令测试$/u);
   assert.equal(stderr.read(), "");
 
   const failed = capture();

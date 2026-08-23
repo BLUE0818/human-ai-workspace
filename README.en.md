@@ -111,7 +111,7 @@ haiw "Project name"
 The CLI creates:
 
 ```text
-D:\ZM\qwenpaw_job\YYYY-MM-DD-Project name
+D:\ZM\qwenpaw_job\YYYY-MM-DD_Project name
 ```
 
 It uses the fixed template version `template-v0.1.0`, verifies the file list and SHA-256 hashes, never overwrites an existing directory, and leaves no final workspace if downloading or verification fails.

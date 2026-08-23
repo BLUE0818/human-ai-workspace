@@ -111,7 +111,7 @@ haiw "项目名称"
 CLI 会按本机日期创建：
 
 ```text
-D:\ZM\qwenpaw_job\YYYY-MM-DD-项目名称
+D:\ZM\qwenpaw_job\YYYY-MM-DD_项目名称
 ```
 
 它使用固定模板版本 `template-v0.1.0`，校验文件清单和 SHA-256，不覆盖已有目录；下载或校验失败时不会留下正式工作区。

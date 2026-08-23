@@ -54,7 +54,7 @@ export function validateProjectName(value) {
   if (value !== value.trim()) {
     fail("INVALID_PROJECT_NAME", "项目名称不能以空格开头或结尾。未创建文件。");
   }
-  if (/^[0-9]{4}-[0-9]{2}-[0-9]{2}-/u.test(value)) {
+  if (/^[0-9]{4}-[0-9]{2}-[0-9]{2}[-_]/u.test(value)) {
     fail("PROJECT_NAME_INCLUDES_DATE", "只需输入项目名称；日期由 CLI 自动生成。未创建文件。");
   }
   if (/[<>:"/\\|?*\u0000-\u001f]/u.test(value) || value.endsWith(".")) {
@@ -157,7 +157,7 @@ export async function createWorkspace(projectName, options = {}) {
   const now = options.now ?? new Date();
   const downloader = options.downloader ?? downloadTemplate;
   const root = await resolveRoot(env);
-  const folder = `${datePrefix(now)}-${name}`;
+  const folder = `${datePrefix(now)}_${name}`;
 
   if (Buffer.byteLength(folder, "utf8") > 255) {
     fail("PROJECT_NAME_TOO_LONG", "项目名称过长，无法创建目录。未创建文件。");
