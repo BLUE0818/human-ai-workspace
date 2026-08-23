@@ -55,7 +55,7 @@ project/
 - `STATUS.md`: what works now, how far the project has progressed, and what has actually been verified;
 - `DECISIONS.md`: what requires a human decision and what has already been decided.
 
-The initial template keeps only five collaboration entry files. Acceptance criteria belong in `PROJECT.md`, current acceptance results belong in `STATUS.md`, and detailed technical evidence remains in `for_ai`. Further documents should be introduced only when a real project needs them.
+The initial template keeps only five necessary collaboration entry files and uses concise wording to reduce model context usage. Acceptance criteria belong in `PROJECT.md`, current acceptance results belong in `STATUS.md`, and detailed technical evidence remains in `for_ai`.
 
 ## How humans and AI divide responsibilities
 
