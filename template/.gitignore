@@ -1,0 +1,4 @@
+# Human-AI Workspace: only Markdown files are tracked in for_human.
+/for_human/**
+!/for_human/**/
+!/for_human/**/*.md

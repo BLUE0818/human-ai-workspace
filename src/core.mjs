@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { execFile } from "node:child_process";
 import {
   lstat,
   mkdtemp,
@@ -12,17 +13,20 @@ import path from "node:path";
 import { downloadTemplate } from "giget";
 
 export const ROOT_ENV = "HUMAN_AI_WORKSPACE_ROOT";
-export const TEMPLATE_VERSION = "template-v0.1.0";
+export const TEMPLATE_VERSION = "template-v0.2.0";
 export const TEMPLATE_SOURCE =
   `gh:BLUE0818/human-ai-workspace/template#${TEMPLATE_VERSION}`;
 
 export const EXPECTED_FILES = Object.freeze({
-  "AGENTS.md": "80ea8e9b15e7be3608b2a72979803d69746509717bbc3805589f51749fcd4259",
+  ".gitignore": "bf907bdaeef8e59e49f657766beff8ab482c131895d056c5527fffa665ba4be3",
+  "AGENTS.md": "4a3fd3cd118d9059264254cd993cc1af2761b668ebc5f0940fa226af76e94428",
   "for_human/PROJECT.md": "cb6c0d910cc2a7e425b5beee08163a27473c3c342f12b9cec042834031f3912a",
-  "for_human/STATUS.md": "3cfa0b60d5dbdc414c971613004a1f3fa2decaf9c13ad1b4e3b83972e682c223",
+  "for_human/STATUS.md": "5fb7d05bfb463abe606804143e5d9f8d6326136d2484228c9297be34f8f93208",
   "for_human/DECISIONS.md": "881c173bbdc384e80483897fdaec5219d26435128ca0048c3ec1da64bff457eb",
   "for_ai/AGENTS.md": "6d7997ae1ccddb5f0528e7f86d3ed9edc6bb3e567a5c7b8980f9bc878e4a38ca",
 });
+
+export const INITIAL_COMMIT_MESSAGE = "chore: initialize Human-AI Workspace";
 
 export class WorkspaceError extends Error {
   constructor(code, message, options) {
@@ -74,6 +78,99 @@ async function pathExists(target) {
     if (error?.code === "ENOENT") return false;
     throw error;
   }
+}
+
+function executeGit(args, options = {}) {
+  return new Promise((resolve, reject) => {
+    execFile(
+      "git",
+      args,
+      {
+        cwd: options.cwd,
+        env: options.env,
+        encoding: "utf8",
+        windowsHide: true,
+      },
+      (error, stdout, stderr) => {
+        if (error?.code === "ENOENT") {
+          reject(error);
+          return;
+        }
+        resolve({
+          code: error ? (Number.isInteger(error.code) ? error.code : 1) : 0,
+          stdout: String(stdout ?? "").trim(),
+          stderr: String(stderr ?? "").trim(),
+        });
+      },
+    );
+  });
+}
+
+async function ensureGitAvailable(gitRunner, gitEnv) {
+  let result;
+  try {
+    result = await gitRunner(["--version"], { env: gitEnv });
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      fail("GIT_NOT_FOUND", "未找到 Git。未开始下载，也未创建工作区。", {
+        cause: error,
+      });
+    }
+    throw error;
+  }
+  if (result?.code !== 0) {
+    fail("GIT_NOT_FOUND", "Git 无法运行。未开始下载，也未创建工作区。");
+  }
+}
+
+async function initializeGitRepository(directory, gitRunner, gitEnv) {
+  async function run(args, errorCode, message) {
+    let result;
+    try {
+      result = await gitRunner(args, { cwd: directory, env: gitEnv });
+    } catch (error) {
+      fail(errorCode, message, { cause: error });
+    }
+    if (result?.code !== 0) {
+      fail(errorCode, message, { cause: new Error(result?.stderr || "Git command failed") });
+    }
+    return result;
+  }
+
+  await run(
+    ["init", "--initial-branch=main"],
+    "GIT_INIT_FAILED",
+    "无法在新工作区初始化 Git。未留下正式工作区。",
+  );
+  await run(
+    ["add", "--all"],
+    "GIT_STAGE_FAILED",
+    "无法暂存新工作区的初始文件。未留下正式工作区。",
+  );
+  await run(
+    ["commit", "--message", INITIAL_COMMIT_MESSAGE],
+    "GIT_COMMIT_FAILED",
+    "无法创建 Git 初始提交。请先配置 Git user.name 和 user.email；未留下正式工作区。",
+  );
+  const commit = await run(
+    ["rev-parse", "--verify", "HEAD"],
+    "GIT_VERIFY_FAILED",
+    "无法验证 Git 初始提交。未留下正式工作区。",
+  );
+  const branch = await run(
+    ["symbolic-ref", "--short", "HEAD"],
+    "GIT_VERIFY_FAILED",
+    "无法验证 Git 初始分支。未留下正式工作区。",
+  );
+  const status = await run(
+    ["status", "--porcelain"],
+    "GIT_VERIFY_FAILED",
+    "无法验证 Git 工作树状态。未留下正式工作区。",
+  );
+  if (!/^[0-9a-f]{40,64}$/u.test(commit.stdout) || branch.stdout !== "main" || status.stdout !== "") {
+    fail("GIT_VERIFY_FAILED", "Git 初始仓库验证失败。未留下正式工作区。");
+  }
+  return { commit: commit.stdout, branch: branch.stdout };
 }
 
 async function resolveRoot(env) {
@@ -156,6 +253,8 @@ export async function createWorkspace(projectName, options = {}) {
   const env = options.env ?? process.env;
   const now = options.now ?? new Date();
   const downloader = options.downloader ?? downloadTemplate;
+  const gitRunner = options.gitRunner ?? executeGit;
+  const gitEnv = options.gitEnv ?? process.env;
   const root = await resolveRoot(env);
   const folder = `${datePrefix(now)}_${name}`;
 
@@ -170,6 +269,8 @@ export async function createWorkspace(projectName, options = {}) {
     fail("TARGET_ALREADY_EXISTS", `目标工作区已存在：${target}。未覆盖任何内容。`);
   }
 
+  await ensureGitAvailable(gitRunner, gitEnv);
+
   let tempRoot;
   try {
     tempRoot = await mkdtemp(path.join(root, ".haiw-"));
@@ -177,6 +278,7 @@ export async function createWorkspace(projectName, options = {}) {
     fail("WORKSPACE_ROOT_NOT_WRITABLE", `无法在 ${ROOT_ENV} 中创建内容。未开始下载。`, { cause: error });
   }
   const staging = path.join(tempRoot, "workspace");
+  let gitRepository;
 
   try {
     await downloader(TEMPLATE_SOURCE, {
@@ -186,6 +288,7 @@ export async function createWorkspace(projectName, options = {}) {
       silent: true,
     });
     await verifyTemplate(staging);
+    gitRepository = await initializeGitRepository(staging, gitRunner, gitEnv);
     if (await pathExists(target)) {
       fail("TARGET_ALREADY_EXISTS", `目标工作区已存在：${target}。未覆盖任何内容。`);
     }
@@ -202,5 +305,8 @@ export async function createWorkspace(projectName, options = {}) {
     workspace: target,
     template_version: TEMPLATE_VERSION,
     created_files: Object.keys(EXPECTED_FILES),
+    git_initialized: true,
+    git_branch: gitRepository.branch,
+    git_commit: gitRepository.commit,
   };
 }

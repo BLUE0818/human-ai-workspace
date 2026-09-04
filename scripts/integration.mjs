@@ -11,6 +11,9 @@ try {
     env: { [ROOT_ENV]: root },
   });
   assert.equal(result.template_version, TEMPLATE_VERSION);
+  assert.equal(result.git_initialized, true);
+  assert.equal(result.git_branch, "main");
+  assert.match(result.git_commit, /^[0-9a-f]{40,64}$/u);
   for (const relativePath of Object.keys(EXPECTED_FILES)) {
     await readFile(path.join(result.workspace, ...relativePath.split("/")));
   }

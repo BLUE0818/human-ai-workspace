@@ -86,7 +86,7 @@
 
 ## 立即试用模板
 
-需要 Node.js 20 或更高版本。先安装 CLI：
+需要 Node.js 20 或更高版本，以及已经配置 `user.name` 和 `user.email` 的 Git。先安装 CLI：
 
 ```powershell
 npm install --global human-ai-workspace-cli
@@ -114,7 +114,13 @@ CLI 会按本机日期创建：
 D:\ZM\qwenpaw_job\YYYY-MM-DD_项目名称
 ```
 
-它使用固定模板版本 `template-v0.1.0`，校验文件清单和 SHA-256，不覆盖已有目录；下载或校验失败时不会留下正式工作区。
+它使用固定模板版本 `template-v0.2.0`，校验文件清单和 SHA-256，不覆盖已有目录。创建时会在工作区根目录初始化 `main` 分支，暂存模板文件并生成初始提交：
+
+```text
+chore: initialize Human-AI Workspace
+```
+
+根目录 `.gitignore` 只预置一条 Human-AI Workspace 通用规则：`for_human` 任意层级只有 Markdown 文件会被 Git 跟踪；其他位置默认可被跟踪，具体项目可以继续补充自己的忽略规则。CLI 不会修改 Git 的全局或仓库配置；下载、校验、Git 初始化或初始提交失败时，不会留下正式工作区。
 
 创建完成后，让 AI 打开新目录并先读取根目录 `AGENTS.md`。
 

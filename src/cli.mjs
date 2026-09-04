@@ -1,11 +1,12 @@
 import { createWorkspace, ROOT_ENV, WorkspaceError } from "./core.mjs";
 
-export const CLI_VERSION = "0.1.1";
+export const CLI_VERSION = "0.2.0";
 
 const HELP = `用法：haiw "项目名称"
 
-从固定版本模板创建 YYYY-MM-DD_项目名称 工作区。
-必须预先设置环境变量 ${ROOT_ENV}。`;
+从固定版本模板创建 YYYY-MM-DD_项目名称 工作区，
+并在工作区根目录创建 main 分支和初始 Git 提交。
+必须预先设置环境变量 ${ROOT_ENV}，并安装、配置 Git。`;
 
 function jsonLine(value) {
   return JSON.stringify(value).replace(
@@ -43,6 +44,8 @@ export async function runCli(
       env: options.env,
       now: options.now,
       downloader: options.downloader,
+      gitRunner: options.gitRunner,
+      gitEnv: options.gitEnv,
     });
     stdout.write(`${jsonLine(result)}\n`);
     return 0;

@@ -86,7 +86,7 @@ The initial template keeps only five necessary collaboration entry files and use
 
 ## Try the template now
 
-Node.js 20 or later is required. Install the CLI first:
+Node.js 20 or later and Git with `user.name` and `user.email` already configured are required. Install the CLI first:
 
 ```powershell
 npm install --global human-ai-workspace-cli
@@ -114,7 +114,13 @@ The CLI creates:
 D:\ZM\qwenpaw_job\YYYY-MM-DD_Project name
 ```
 
-It uses the fixed template version `template-v0.1.0`, verifies the file list and SHA-256 hashes, never overwrites an existing directory, and leaves no final workspace if downloading or verification fails.
+It uses the fixed template version `template-v0.2.0`, verifies the file list and SHA-256 hashes, and never overwrites an existing directory. During creation, it initializes a `main` branch at the workspace root, stages the template files, and creates this initial commit:
+
+```text
+chore: initialize Human-AI Workspace
+```
+
+The root `.gitignore` contains only one Human-AI Workspace default: at any depth under `for_human`, Git tracks Markdown files only. Files elsewhere are trackable by default, and each project may extend `.gitignore` for its own stack. The CLI does not modify global or repository Git configuration. If download, verification, Git initialization, or the initial commit fails, no final workspace is left behind.
 
 After creation, ask the AI agent to open the new directory and read the root `AGENTS.md` first.
 
