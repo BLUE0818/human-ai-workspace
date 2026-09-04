@@ -37,6 +37,7 @@
 
 ```text
 项目目录/
+├── .gitignore
 ├── AGENTS.md
 ├── for_human/
 │   ├── PROJECT.md

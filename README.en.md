@@ -37,6 +37,7 @@ This template gives every project a stable **human collaboration interface**. Pe
 
 ```text
 project/
+├── .gitignore
 ├── AGENTS.md
 ├── for_human/
 │   ├── PROJECT.md
